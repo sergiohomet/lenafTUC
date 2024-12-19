@@ -6,9 +6,10 @@ import { OrderActions } from "../reducers/order-reducer";
 type OrderTotalsProps = {
   order: OrderItem[];
   dispatch: Dispatch<OrderActions>;
+  direction: string
 };
 
-export const OrderTotals = ({ order, dispatch }: OrderTotalsProps) => {
+export const OrderTotals = ({ order, dispatch, direction }: OrderTotalsProps) => {
   const TotalAmount = useMemo(
     () => order.reduce((total, item) => total + item.quantity * item.price, 0),
     [order]
@@ -36,7 +37,7 @@ export const OrderTotals = ({ order, dispatch }: OrderTotalsProps) => {
       <button
         className="w-full bg-black p-3 uppercase text-white font-bold text-xl mt-5 disabled:opacity-10"
         disabled={TotalAmount === 0}
-        onClick={() => dispatch({ type: "place-order", payload: { order } })}
+        onClick={() => dispatch({ type: "place-order", payload: { order, direction } })}
       >
         Guardar Orden
       </button>

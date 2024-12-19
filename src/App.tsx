@@ -43,6 +43,7 @@ function App() {
               <OrderTotals 
                 order={state.order}
                 dispatch={dispatch}
+                direction={state.direction}
               />
             </>
           ): (
