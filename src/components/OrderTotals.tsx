@@ -27,7 +27,8 @@ export const OrderTotals = ({ order, dispatch }: OrderTotalsProps) => {
           Agregar dirección {""}
           <input 
             type="text"
-            className="w-full border border-slate-300 rounded-lg mt-3"
+            className="w-full border border-slate-300 rounded-lg mt-3 p-2"
+            onChange={(e) => dispatch({type: 'set-direction', payload: {direction: e.target.value}})}
           />
         </p>
       </div>
@@ -35,7 +36,7 @@ export const OrderTotals = ({ order, dispatch }: OrderTotalsProps) => {
       <button
         className="w-full bg-black p-3 uppercase text-white font-bold text-xl mt-5 disabled:opacity-10"
         disabled={TotalAmount === 0}
-        onClick={() => dispatch({ type: "place-order" })}
+        onClick={() => dispatch({ type: "place-order", payload: { order } })}
       >
         Guardar Orden
       </button>
