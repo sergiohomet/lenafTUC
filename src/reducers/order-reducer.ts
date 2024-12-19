@@ -57,7 +57,8 @@ export const orderReducer = (state: OrderState, action: OrderActions) => {
     return {
       ...state,
       order: [],
-      orderPDF: updatedOrderPDF
+      orderPDF: updatedOrderPDF,
+      direction: ''
     };
   }
 

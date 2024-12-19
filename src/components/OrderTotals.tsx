@@ -24,11 +24,12 @@ export const OrderTotals = ({ order, dispatch, direction }: OrderTotalsProps) =>
           Total a pagar: {""}
           <span className="font-bold">{formatCurrency(TotalAmount)}</span>
         </p>
-        <p className="text-xl font-semibold border-t border-slate-300 pt-2">
-          Agregar dirección {""}
+        <p className="text-lg font-semibold border-t border-slate-300 pt-2">
+          Dirección o persona que realizo el pedido(cliente) {""}
           <input 
             type="text"
             className="w-full border border-slate-300 rounded-lg mt-3 p-2"
+            placeholder="Dirección de entrega, persona que realizo el pedido(cliente)" 
             onChange={(e) => dispatch({type: 'set-direction', payload: {direction: e.target.value}})}
           />
         </p>
