@@ -1,13 +1,12 @@
-import { useReducer } from "react";
 import MenuItem from "./components/MenuItem";
 import { OrderContents } from "./components/OrderContents";
 import { OrderTotals } from "./components/OrderTotals";
 import { menuItems } from "./data/db";
-import { initialState, orderReducer } from "./reducers/order-reducer";
+import { useOrder } from "./hooks/useOrder";
 
 function App() {
-  const [state, dispatch] = useReducer(orderReducer, initialState)
-
+  
+  const { state } = useOrder()
 
   return (
     <>
@@ -26,7 +25,6 @@ function App() {
               <MenuItem 
                 key={item.id} 
                 item={item}
-                dispatch={dispatch}
               />
             ))}
           </div>
@@ -35,16 +33,9 @@ function App() {
         <div className="border-l border-slate-300 p-5 roudend-lg mt-8">
           {state.order.length ? (
             <>
-              <OrderContents 
-                order={state.order}
-                dispatch={dispatch}
-              />
+              <OrderContents />
 
-              <OrderTotals 
-                order={state.order}
-                dispatch={dispatch}
-                direction={state.direction}
-              />
+              <OrderTotals />
             </>
           ): (
             <p className="text-center text-2xl">La orden esta vacia</p>

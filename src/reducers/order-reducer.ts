@@ -1,21 +1,22 @@
+import { v4 as uuidv4 } from "uuid";
 import { menuItem, OrderItem } from "../types";
 
 export type OrderActions =
-  | { type: "add-item", payload: { item: menuItem } }
-  | { type: "remove-item", payload: { id: menuItem["id"] } }
-  | { type: "place-order", payload: { order: OrderItem[], direction: string } }
-  | { type: 'set-direction', payload: { direction: string } }
+  | { type: "add-item"; payload: { item: menuItem } }
+  | { type: "remove-item"; payload: { id: menuItem["id"] } }
+  | { type: "place-order"; payload: { order: OrderItem[]; direction: string } }
+  | { type: "set-direction"; payload: { direction: string } };
 
 export type OrderState = {
   order: OrderItem[];
-  orderPDF: { order: OrderItem[], direction: string }[];
+  orderPDF: { order: OrderItem[]; direction: string }[];
   direction: string;
 };
 
 export const initialState: OrderState = {
   order: [],
   orderPDF: [],
-  direction: ''
+  direction: "",
 };
 
 export const orderReducer = (state: OrderState, action: OrderActions) => {
@@ -38,7 +39,7 @@ export const orderReducer = (state: OrderState, action: OrderActions) => {
 
     return {
       ...state,
-      order: updatedOrder
+      order: updatedOrder,
     };
   }
 
@@ -48,24 +49,32 @@ export const orderReducer = (state: OrderState, action: OrderActions) => {
     );
     return {
       ...state,
-      order
+      order,
     };
   }
 
   if (action.type === "place-order") {
-    const updatedOrderPDF = [...state.orderPDF, { order: state.order, direction: action.payload.direction }];
+    const updatedOrderPDF = [
+      ...state.orderPDF,
+      {
+        order: state.order,
+        direction: action.payload.direction,
+        id: uuidv4(),
+      },
+    ];
+
     return {
       ...state,
       order: [],
       orderPDF: updatedOrderPDF,
-      direction: ''
+      direction: "",
     };
   }
 
-  if (action.type === 'set-direction') {
+  if (action.type === "set-direction") {
     return {
       ...state,
-      direction: action.payload.direction
+      direction: action.payload.direction,
     };
   }
 
