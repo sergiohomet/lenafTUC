@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { menuItem, OrderItem } from "../types";
+import { menuItem, OrderItem, orderPDF } from "../types";
 
 export type OrderActions =
   | { type: "add-item"; payload: { item: menuItem } }
@@ -8,16 +8,11 @@ export type OrderActions =
   | { type: "set-direction"; payload: { direction: string } }
   | { type: "set-date"; payload: { date: string } }
   | { type: "select-order"; payload: { id: string } }
-  | { type: 'remove-order'; payload: { id: string } }
+  | { type: "remove-order"; payload: { id: string } };
 
 export type OrderState = {
   order: OrderItem[];
-  orderPDF: {
-    id: string;
-    order: OrderItem[];
-    direction: string;
-    date: string;
-  }[];
+  orderPDF: orderPDF[];
   direction: string;
   date: string;
   id: string;
@@ -132,12 +127,14 @@ export const orderReducer = (state: OrderState, action: OrderActions) => {
     };
   }
 
-  if(action.type === 'remove-order') {
-    const updatedOrderPDF = state.orderPDF.filter(order => order.id !== action.payload.id)
+  if (action.type === "remove-order") {
+    const updatedOrderPDF = state.orderPDF.filter(
+      (order) => order.id !== action.payload.id
+    );
     return {
       ...state,
-      orderPDF: updatedOrderPDF
-    }
+      orderPDF: updatedOrderPDF,
+    };
   }
 
   return state;
