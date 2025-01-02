@@ -14,7 +14,6 @@ export default function OrderCase() {
     return { ...orders, orderTotal };
   });
 
-  // Calcular el total general de todas las órdenes
   const allOrdersTotal = ordersWithTotals.reduce(
     (total, orders) => total + orders.orderTotal,
     0
@@ -23,11 +22,11 @@ export default function OrderCase() {
   return (
     <div>
       <h2 className="font-black text-3xl text-center">Caja General</h2>
-      <p className="text-center">
-        Pedidos Totales - <span>{allOrders.length}</span>
+      <p className="text-center font-bold">
+        Pedidos Totales - <span className="font-normal">{allOrders.length}</span>
       </p>
-      <p className="text-center">
-        Suma total - <span>{formatCurrency(allOrdersTotal)}</span>
+      <p className="text-center font-bold">
+        Suma total - <span className="font-normal">{formatCurrency(allOrdersTotal)}</span>
       </p>
 
       {allOrders.length === 0 ? (
