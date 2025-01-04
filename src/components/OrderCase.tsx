@@ -1,8 +1,14 @@
 import { useOrder } from "../hooks/useOrder";
 import { formatCurrency, formatDate } from "../helpers";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import OrderPDF from "./OrderPDF";
+import { useState } from "react";
 
 export default function OrderCase() {
   const { state, dispatch } = useOrder();
+
+  const [isPDFReady, setIsPDFReady] = useState(false);
+  const [, setButtonText] = useState("Generar PDF");
 
   const allOrders = state.orderPDF;
 
@@ -19,15 +25,38 @@ export default function OrderCase() {
     0
   );
 
+  const handleGeneratePDF = (pdfId: string) => {
+    dispatch({ type: "set-id-pdf", payload: { pdfId } });
+    setIsPDFReady(false);
+    setButtonText("Generando PDF...");
+    setTimeout(() => {
+      setIsPDFReady(true);
+      setButtonText("Descargar PDF");
+    }, 2000);
+  };
+
+  const handleDownloadPDF = () => {
+    setButtonText("Generar PDF");
+    dispatch({ type: "set-id-pdf", payload: { pdfId: "" } });
+  };
+
   return (
     <div>
       <h2 className="font-black text-3xl text-center">Caja General</h2>
-      <p className="text-center font-bold">
-        Pedidos Totales - <span className="font-normal">{allOrders.length}</span>
-      </p>
-      <p className="text-center font-bold">
-        Suma total - <span className="font-normal">{formatCurrency(allOrdersTotal)}</span>
-      </p>
+      {allOrders.length > 0 && (
+        <>
+          <p className="text-center font-bold">
+            Pedidos Totales -{" "}
+            <span className="font-normal">{allOrders.length}</span>
+          </p>
+          <p className="text-center font-bold">
+            Suma total -{" "}
+            <span className="font-normal">
+              {formatCurrency(allOrdersTotal)}
+            </span>
+          </p>
+        </>
+      )}
 
       {allOrders.length === 0 ? (
         <p className="text-2xl text-center mt-5">No hay pedidos aún...</p>
@@ -81,7 +110,7 @@ export default function OrderCase() {
               </div>
 
               <button
-                className="p-2 bg-black text-white rounded mt-5 uppercase"
+                className="p-2 bg-black text-white rounded mt-1 uppercase"
                 onClick={() =>
                   dispatch({
                     type: "select-order",
@@ -92,7 +121,7 @@ export default function OrderCase() {
                 Seleccionar Pedido
               </button>
               <button
-                className="p-2 bg-red-700 hover:bg-red-600 transition-all text-white rounded mt-5 uppercase"
+                className="p-2 bg-red-700 hover:bg-red-600 transition-all text-white rounded mt-1 uppercase"
                 onClick={() =>
                   dispatch({
                     type: "remove-order",
@@ -102,6 +131,28 @@ export default function OrderCase() {
               >
                 Eliminar pedido
               </button>
+              <button
+                className="p-2 bg-black text-white rounded mt-1 uppercase"
+                onClick={() => handleGeneratePDF(orders.id)}
+              >
+                Generar PDF
+              </button>
+              {isPDFReady && (
+                <PDFDownloadLink
+                  document={<OrderPDF state={state} />}
+                  fileName="order.pdf"
+                >
+                  {/* @ts-expect-error is necessary */}
+                  {({ loading }: PDFDownloadLinkProps) => (
+                    <button
+                      className="p-2 bg-blue-700 hover:bg-blue-600 transition-all text-white rounded uppercase w-full mt-1"
+                      onClick={handleDownloadPDF}
+                    >
+                      {loading ? "Generando PDF..." : "Descargar PDF"}
+                    </button>
+                  )}
+                </PDFDownloadLink>
+              )}
             </div>
           ))}
         </div>

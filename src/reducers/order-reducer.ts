@@ -8,15 +8,17 @@ export type OrderActions =
   | { type: "set-direction"; payload: { direction: string } }
   | { type: "set-date"; payload: { date: string } }
   | { type: "select-order"; payload: { id: string } }
-  | { type: "remove-order"; payload: { id: string } };
+  | { type: "remove-order"; payload: { id: string } }
+  | { type: "set-id-pdf"; payload: { pdfId: string } };
 
-export type OrderState = {
-  order: OrderItem[];
-  orderPDF: orderPDF[];
-  direction: string;
-  date: string;
-  id: string;
-};
+  export type OrderState = {
+    order: OrderItem[];
+    orderPDF: orderPDF[];
+    direction: string;
+    date: string;
+    id: string; // Usado por select-order
+    pdfId: string; // Nuevo campo para set-id-pdf
+  };
 
 const localStorageOrder = (): {
   id: string;
@@ -34,6 +36,7 @@ export const initialState: OrderState = {
   direction: "",
   date: "",
   id: "",
+  pdfId: "",
 };
 
 export const orderReducer = (state: OrderState, action: OrderActions) => {
@@ -134,6 +137,13 @@ export const orderReducer = (state: OrderState, action: OrderActions) => {
     return {
       ...state,
       orderPDF: updatedOrderPDF,
+    };
+  }
+
+  if(action.type === "set-id-pdf") {
+    return {
+      ...state,
+      pdfId: action.payload.pdfId,
     };
   }
 

@@ -5,14 +5,12 @@ import { OrderContents } from "./components/OrderContents";
 import { menuItems } from "./data/db";
 import { useOrder } from "./hooks/useOrder";
 import OrderTotals from "./components/OrderTotals.tsx";
-
 function App() {
   const { state } = useOrder();
 
   useEffect(() => {
     localStorage.setItem("orderPDF", JSON.stringify(state.orderPDF));
-  }, [state])
-  
+  }, [state]);
 
   return (
     <>
