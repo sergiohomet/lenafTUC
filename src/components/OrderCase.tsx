@@ -110,7 +110,7 @@ export default function OrderCase() {
               </div>
 
               <button
-                className="p-2 bg-black text-white rounded mt-1 uppercase"
+                className="p-2 bg-blue-700 hover:bg-blue-600 transition-all text-white rounded uppercase mt-1"
                 onClick={() =>
                   dispatch({
                     type: "select-order",
@@ -118,7 +118,7 @@ export default function OrderCase() {
                   })
                 }
               >
-                Seleccionar Pedido
+                Modificar Pedido
               </button>
               <button
                 className="p-2 bg-red-700 hover:bg-red-600 transition-all text-white rounded mt-1 uppercase"
